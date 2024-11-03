@@ -1,9 +1,37 @@
-import numpy as np
-import numpy.ma as ma
+import pandas as pd
 
-# Create a masked array
-arr = np.array([1, 2, 3, 4, 5])
-mask = [False, True, False, True, False]
-masked_arr = ma.masked_array(arr, mask)
+iris = pd.read_csv("https://sololearn.com/uploads/files/iris.csv")
 
-print(masked_arr)  # Output: [1 -- 3 -- 5]
+print("These are the columns:")
+print(iris.columns)
+
+
+# ----------------------
+def sep():
+    print("---" * 30)
+
+
+# ----------------------
+
+sep()
+
+# print(iris.head())
+
+# print("This is the SHAPE", iris.shape)
+
+# Drop the id columnn
+iris.drop("id", axis=1, inplace=True)
+
+print(iris.head())
+print("New Shape", iris.shape)
+
+sep()
+print("IRIS. DESCRIBE -> Statitics" + "\n")
+print(iris.describe())
+
+sep()
+
+print("SAMPLE by CATEGORY:")
+print(iris.groupby("species").sample(10))
+
+sep()

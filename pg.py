@@ -1,37 +1,43 @@
-import pandas as pd
-
-iris = pd.read_csv("https://sololearn.com/uploads/files/iris.csv")
-
-print("These are the columns:")
-print(iris.columns)
+import numpy as np
+from math import dist
 
 
-# ----------------------
-def sep():
-    print("---" * 30)
+def calculate_euclidean_dist(datapoints, centroid, round_=False):
+    result = dist(datapoints, centroid)
+    return result if not round_ else round(result, 2)
 
 
-# ----------------------
+centroid_1 = [0, 0]
+centroid_2 = [2, 2]
 
-sep()
+n = int(input())
 
-# print(iris.head())
+datapoints = []
+for i in range(n):
+    x = [float(x) for x in input().split()]
+    datapoints.append(x)
 
-# print("This is the SHAPE", iris.shape)
+closter_1 = []
+closter_2 = []
 
-# Drop the id columnn
-iris.drop("id", axis=1, inplace=True)
+for i, dp in enumerate(datapoints):
+    res_1 = calculate_euclidean_dist(dp, centroid_1, round_=True)
+    res_2 = calculate_euclidean_dist(dp, centroid_2, round_=True)
+    r = min(res_1, res_2)
+    if str(r) in str(res_1) or res_1 == res_2:
+        closter_1.append(dp)
+    else:
+        closter_2.append(dp)
 
-print(iris.head())
-print("New Shape", iris.shape)
+for closter in [closter_1, closter_2]:
+    if len(closter) == 0:
+        closter.append([])
 
-sep()
-print("IRIS. DESCRIBE -> Statitics" + "\n")
-print(iris.describe())
+new_centroid_1 = np.array(closter_1)
+new_centroid_2 = np.array(closter_2)
 
-sep()
+centroid_1 = np.mean(new_centroid_1, axis=0)
+centroid_2 = np.mean(new_centroid_2, axis=0)
 
-print("SAMPLE by CATEGORY:")
-print(iris.groupby("species").sample(10))
-
-sep()
+print(centroid_1.round(2))
+print(centroid_2.round(2))
